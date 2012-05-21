@@ -30,12 +30,12 @@ twit.stream('statuses/filter', {'follow': ids}, function(stream) {
   });
 });
 
-app.get('/', function(request, response) {
-  file.serve(request, response);
-});
-
 app.get('/api', function(request, response) {
   response.send('Hello World!');
+});
+
+app.get('*', function(request, response) {
+  file.serve(request, response);
 });
 
 var port = process.env.PORT || 3000;
