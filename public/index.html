@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<!-- saved from url=(0054)http://twitter.github.com/bootstrap/examples/hero.html -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <title>somafm twitter playlists</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
+    <title>somafm twitter playlists</title>
 
-    <!-- Le styles -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
     <style type="text/css">
@@ -90,11 +90,11 @@
     <![endif]-->
 
     <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="http://twitter.github.com/bootstrap/assets/ico/favicon.ico">
+    <!--<link rel="shortcut icon" href="http://twitter.github.com/bootstrap/assets/ico/favicon.ico">
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-57-precomposed.png">-->
   </head>
 
   <body>
@@ -112,61 +112,46 @@
             <ul class="nav">
               <li class="active"><a href="http://twitter.github.com/bootstrap/examples/hero.html#">Home</a></li>
               <li><a href="http://twitter.github.com/bootstrap/examples/hero.html#about">About</a></li>
-              <li><a href="http://twitter.github.com/bootstrap/examples/hero.html#contact">Github</a></li>
+              <li><a href="http://github.com/johnmendonca/somafmpls">Github</a></li>
             </ul>
-          </div><!--/.nav-collapse -->
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="container">
-
-      <!-- Main hero unit for a primary marketing message or call to action -->
-      <!--<div class="hero-unit">
-        <h1>Sattva</h1>
-          <p>Maintaining it is the foundation for success in life.
-          <ul>
-            <li>Meditation</li>
-            <li>Mindfulness</li>
-            <li>Dreaming</li>
-            <li>Body</li>
-            <li>Diet</li>
-          </ul>
-          </p>
-        <p><a class="btn btn-primary btn-large">Learn more »</a></p>
-      </div>-->
-
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="span6">
-          <div class="pls_box">
-            <div class="pls_content pls_head">
-              <img src="http://si0.twimg.com/profile_images/28892242/cliqhop-medium-sq_normal.jpg"/>
-              <p>
-              <span class="pls_title">cliqhop</span><br/>
-              <span class="pls_desc">IDM: Blips'n'beeps backed mostly w/beats. Intelligent Dance Music.</span>
-              </p>
-            </div>
-            <div class="pls_content pls_body">
-              <ul>
-                <li>♬ Infantjoy - Application 4</li>
-                <li>♬ Sepiamusic - R.I.D. ♬</li>
-                <li>♬ Scud Mountain Boys - Cigarette Sandwich ♬</li>
-                <li>♬ You Say Party We Say Die - Nightswimming ♬</li>
-                <li>♬ Posy - Out ♬</li>
-                <li>♬ Schiller - Unison ♬</li>
-                <li>♬ Hey Rosetta! - Red Heart ♬</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> <!-- /container -->
+    <div id="pls_container" class="container"></div>
 
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="js/jquery-1.6.4.min.js"></script>
-    <script src="js/underscore-1.1.6.js"></script>
-    <script src="js/backbone.js"></script>
-</body></html>
+    <script src="js/jquery-1.7.2.min.js"></script>
+    <script src="js/json2.js"></script>
+    <script src="js/underscore-min.js"></script>
+    <script src="js/backbone-min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/client.js"></script>
+
+    <script type="text/template" id="playlist-template">
+      <div class="pls_box">
+        <div class="pls_content pls_head">
+          <img src="http://si0.twimg.com/profile_images/28892242/cliqhop-medium-sq_normal.jpg"/>
+          <p>
+          <span class="pls_title">cliqhop</span><br/>
+          <span class="pls_desc">IDM: Blips'n'beeps backed mostly w/beats. Intelligent Dance Music.</span>
+          </p>
+        </div>
+        <div class="pls_content pls_body">
+          <ul>
+            <li>♬ Infantjoy - Application ♬</li>
+            <li>♬ Sepiamusic - R.I.D. ♬</li>
+            <li>♬ Scud Mountain Boys - Cigarette Sandwich ♬</li>
+            <li>♬ You Say Party We Say Die - Nightswimming ♬</li>
+            <li>♬ Posy - Out ♬</li>
+            <li>♬ Schiller - Unison ♬</li>
+            <li>♬ Hey Rosetta! - Red Heart ♬</li>
+          </ul>
+        </div>
+      </div>
+    </script>
+  </body>
+</html>

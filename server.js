@@ -1,9 +1,11 @@
 var express = require('express'),
-    static = require('node-static'),
-    twitter = require('ntwitter');
+    static = require('node-static').Server,
+    twitter = require('ntwitter'),
+    EventEmitter = require('events').EventEmitter;
 
 var app = express.createServer(express.logger());
-var file = new(static.Server)('./public');
+    io = require('socket.io').listen(app);
+var file = new static('./public');
 var twit = new twitter({
   consumer_key: process.env.CONSUMER_KEY,
   consumer_secret: process.env.CONSUMER_SECRET,
@@ -21,12 +23,29 @@ var twit = new twitter({
 ids = '6690422,62745194,6681512,6690852,10266982,62747508,6690742,'
     + '14203281,6690342,6690662,6690532,62743720,18225267,157192407,'
     + '6685692,67961727,10266962,6681342,14203234,6690572';
+
+//We have one incoming tweet stream and many possible client sockets,
+//create a common reference point to relay events 
+var tweetRelay = new EventEmitter();
+debugger;
 twit.stream('statuses/filter', {'follow': ids}, function(stream) {
   stream.on('error', function(err, msg) {
     console.log(err, msg);
   });
-  stream.on('data', function (data) {
+  stream.on('data', function(data) {
     console.log(data.user.screen_name + '  ' + data.text);
+    tweetRelay.emit('tweet', {
+      text: data.text,
+      screen_name: data.user.screen_name,
+      description: data.user.description,
+      img_url: data.user.profile_img_url
+    });
+  });
+});
+
+io.sockets.on('connection', function(socket) {
+  tweetRelay.on('tweet', function(data) {
+    socket.emit('tweet', data);
   });
 });
 
