@@ -46,7 +46,7 @@ $(function() {
 
     //value used to generate bootstrap grid
     //don't set higher than 6
-    columns: 4, 
+    columns: 3, 
     playlistViews: [],
     
     addPlaylist: function(pls) {
@@ -57,15 +57,13 @@ $(function() {
       var columnIndex = index % this.columns;
       var columnSpan = 12 / this.columns; //12 is a twitter bootstrap constant
 
-      if (columnIndex == 0) {
-        //create new row first
+      if (columnIndex == 0) {  //we need a new row
         var row = $('<div id="row' + rowIndex + '" class="row"></div>');
         this.$el.append(row);
-      } else {
-        //grab existing row
+      } else { //the row already exists
         var row = $('#row' + rowIndex);
       }
-      //create new column
+
       var column = $('<div id="column' + index + '" class="span' + columnSpan + '"></div>');
       column.append(plsView.render().el);
       row.append(column);
