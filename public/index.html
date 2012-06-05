@@ -20,6 +20,9 @@
       .navbar .brand {
         color: red;
       }
+      .row {
+        margin-bottom: 17px;
+      }
       .pls_box {
         background-color: #00c000;
         padding: 9px;
@@ -134,10 +137,10 @@
     <script type="text/template" id="playlist-template">
       <div class="pls_box">
         <div class="pls_content pls_head">
-          <img src="http://si0.twimg.com/profile_images/28892242/cliqhop-medium-sq_normal.jpg"/>
+          <img src="<%= profile_image_url %>"/>
           <p>
-          <span class="pls_title">cliqhop</span><br/>
-          <span class="pls_desc">IDM: Blips'n'beeps backed mostly w/beats. Intelligent Dance Music.</span>
+          <span class="pls_title"><%= screen_name %></span><br/>
+          <span class="pls_desc"><%= description %></span>
           </p>
         </div>
         <div class="pls_content pls_body">
@@ -153,5 +156,10 @@
         </div>
       </div>
     </script>
+
+    <script type="text/template" id="playlist-song-template">
+      <li><%= text %></li>
+    </script>
+
   </body>
 </html>

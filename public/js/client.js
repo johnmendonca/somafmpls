@@ -11,22 +11,67 @@ $(function() {
       id_str: "12345",
       screen_name: "Dope Station",
       description: "This is what this music is...",
-      profile_image_url: "",
-      followers_count: 0
-    }
+      profile_image_url: ""
+    },
+    sync: function() {}
   });
 
+  /*
+   * Main collection that receives messages from the socket
+   */
   Playlists = Backbone.Collection.extend({
+    initialize: function() {
+      _.bindAll(this, 'receive');
+      this.socket = io.connect('http://localhost:3000');
+      this.socket.on('tweet', this.receive);
+    },
+
+    model: Playlist,
+    sync: function() {},
+
+    receive: function(data) {
+      var playlist = this.find(function(pls) { return pls.get('screen_name') == data.user.screen_name; });
+      if (!playlist) {
+        playlist = this.create(data.user);
+      }
+    }
   });
 
   GridView = Backbone.View.extend({
     initialize: function() {
-      _.bindAll(this, 'render');
+      _.bindAll(this, 'render', 'addPlaylist');
+      this.collection.on('add', this.addPlaylist);
       this.render();
     },
+
+    //value used to generate bootstrap grid
+    //don't set higher than 6
+    columns: 4, 
+    playlistViews: [],
     
+    addPlaylist: function(pls) {
+      var plsView = new PlaylistView({model: pls});
+      var length = this.playlistViews.push(plsView);
+      var index = length - 1;
+      var rowIndex = Math.floor(index / this.columns);
+      var columnIndex = index % this.columns;
+      var columnSpan = 12 / this.columns; //12 is a twitter bootstrap constant
+
+      if (columnIndex == 0) {
+        //create new row first
+        var row = $('<div id="row' + rowIndex + '" class="row"></div>');
+        this.$el.append(row);
+      } else {
+        //grab existing row
+        var row = $('#row' + rowIndex);
+      }
+      //create new column
+      var column = $('<div id="column' + index + '" class="span' + columnSpan + '"></div>');
+      column.append(plsView.render().el);
+      row.append(column);
+    },
+
     render: function() {
-      this.$el.append(new PlaylistView().render().el);
       return this;
     }
   });
@@ -39,7 +84,7 @@ $(function() {
     },
 
     render: function() {
-      this.el = this.plsTemplate({});
+      this.el = this.plsTemplate(this.model.toJSON());
       return this;
     }
   });
@@ -52,9 +97,8 @@ $(function() {
     }
   });
 
-  appView = new GridView({el: $("#pls_container")});
-  var socket = io.connect('http://localhost:3000');
-  socket.on('tweet', function(data) {
-    $('.pls_body ul').append('<li>' + data.text + '</li>');
+  appView = new GridView({
+    el: $("#pls_container"),
+    collection: new Playlists()
   });
 });

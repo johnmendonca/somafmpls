@@ -35,10 +35,14 @@ twit.stream('statuses/filter', {'follow': ids}, function(stream) {
   stream.on('data', function(data) {
     console.log(data.user.screen_name + '  ' + data.text);
     tweetRelay.emit('tweet', {
+      id_str: data.id_str,
       text: data.text,
-      screen_name: data.user.screen_name,
-      description: data.user.description,
-      img_url: data.user.profile_img_url
+      user: {
+        id_str: data.user.id_str,
+        screen_name: data.user.screen_name,
+        description: data.user.description,
+        profile_image_url: data.user.profile_image_url
+      }
     });
   });
 });
