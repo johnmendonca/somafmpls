@@ -1,11 +1,4 @@
 $(function() {
-  /*var SongTweet = Backbone.Model.extend({
-    defaults: {
-      id_str: "12345",
-      text: "Dope Song"
-    }
-  });*/
-
   var Playlist = Backbone.Model.extend({
     defaults: {
       id_str: "12345",
@@ -13,7 +6,19 @@ $(function() {
       description: "This is what this music is...",
       profile_image_url: ""
     },
-    sync: function() {}
+
+    initialize: function() {
+      _.bindAll(this, 'receive');
+      this.songs = [];
+    },
+
+    sync: function() {},
+
+    receive: function(data) {
+      var song = data.text.replace(/♬[^♬]*$/, '');
+      this.songs.unshift(song);
+      this.trigger('change:songs', song);
+    }
   });
 
   /* Main collection that receives messages from the socket */
@@ -32,7 +37,7 @@ $(function() {
       if (!playlist) {
         playlist = this.create(data.user);
       }
-      //send tweet to playlist
+      playlist.receive(data);
     }
   });
 
@@ -76,23 +81,22 @@ $(function() {
 
   /* View for a single playlist */
   var PlaylistView = Backbone.View.extend({
-    plsTemplate: _.template($("#playlist-template").html()),
+    template: _.template($("#playlist-template").html()),
 
     initialize: function() {
-      _.bindAll(this, 'render');
+      _.bindAll(this, 'render','addSong');
+      this.model.on('change:songs', this.addSong);
     },
 
     render: function() {
-      this.el = this.plsTemplate(this.model.toJSON());
+      this.$el.html(this.template(this.model.toJSON()));
       return this;
+    },
+
+    addSong: function(song) {
+      this.$el.find('.pls_body ul').prepend('<li>' + song + '</li>');
     }
   });
-
-  /*var ItemView = Backbone.View.extend({ 
-    tagName: "li",
-    initialize: function() { },
-    render: function() { }
-  });*/
 
   var appView = new GridView({
     el: $("#pls_container"),
