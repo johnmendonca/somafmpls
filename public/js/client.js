@@ -1,12 +1,12 @@
 $(function() {
-  SongTweet = Backbone.Model.extend({
+  /*var SongTweet = Backbone.Model.extend({
     defaults: {
       id_str: "12345",
       text: "Dope Song"
     }
-  });
+  });*/
 
-  Playlist = Backbone.Model.extend({
+  var Playlist = Backbone.Model.extend({
     defaults: {
       id_str: "12345",
       screen_name: "Dope Station",
@@ -16,10 +16,8 @@ $(function() {
     sync: function() {}
   });
 
-  /*
-   * Main collection that receives messages from the socket
-   */
-  Playlists = Backbone.Collection.extend({
+  /* Main collection that receives messages from the socket */
+  var Playlists = Backbone.Collection.extend({
     initialize: function() {
       _.bindAll(this, 'receive');
       this.socket = io.connect('http://localhost:3000');
@@ -34,10 +32,12 @@ $(function() {
       if (!playlist) {
         playlist = this.create(data.user);
       }
+      //send tweet to playlist
     }
   });
 
-  GridView = Backbone.View.extend({
+  /* View for entire grid of playlists, tied to playlists collection. */
+  var GridView = Backbone.View.extend({
     initialize: function() {
       _.bindAll(this, 'render', 'addPlaylist');
       this.collection.on('add', this.addPlaylist);
@@ -74,7 +74,8 @@ $(function() {
     }
   });
 
-  PlaylistView = Backbone.View.extend({
+  /* View for a single playlist */
+  var PlaylistView = Backbone.View.extend({
     plsTemplate: _.template($("#playlist-template").html()),
 
     initialize: function() {
@@ -87,15 +88,13 @@ $(function() {
     }
   });
 
-  ItemView = Backbone.View.extend({ 
+  /*var ItemView = Backbone.View.extend({ 
     tagName: "li",
-    initialize: function() {
-    },
-    render: function() {
-    }
-  });
+    initialize: function() { },
+    render: function() { }
+  });*/
 
-  appView = new GridView({
+  var appView = new GridView({
     el: $("#pls_container"),
     collection: new Playlists()
   });
